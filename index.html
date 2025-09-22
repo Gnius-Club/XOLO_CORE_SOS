@@ -57,16 +57,14 @@
     }
     .login-container h2 { text-align: center; margin: 0 0 4px 0; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: 10px; }
     .login-container p { text-align: center; color: var(--text-muted); font-size: 15px; margin: 0; }
-    .login-input, .login-select { /* MODIFICADO: Estilo compartido */
+    .login-input, .login-select {
       width: 100%; padding: 16px; border-radius: 14px; font-size: 1rem; 
       border: 1px solid var(--bg-panel-secondary); background: var(--bg-panel); color: var(--text-light); 
       outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease; 
       box-sizing: border-box; font-family: var(--font-main);
     }
     .login-input:focus, .login-select:focus { border-color: var(--gradient-start-color); box-shadow: 0 0 8px rgba(var(--gradient-start-rgb), 0.6); }
-    /* NUEVO: Estilo para opción deshabilitada */
     .login-select option:disabled { color: #888; }
-    
     .login-btn { 
         width: 100%; border: none; padding: 16px; border-radius: 14px; margin-top: 8px;
         background: linear-gradient(45deg, var(--gradient-end-color), var(--gradient-start-color)); 
@@ -78,7 +76,7 @@
     .app::before { content: ""; position: absolute; inset: -2px; z-index: -1; border-radius: 26px; background: conic-gradient(from var(--angle, 0deg) at 50% 50%, var(--gradient-end-color), var(--gradient-start-color), var(--gradient-end-color)); animation: rotateGradient 10s linear infinite; }
 
     header { padding: 16px 24px; background: var(--bg-panel); display: flex; gap: 12px; align-items: center; flex-shrink: 0; flex-wrap: wrap; }
-    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, var(--gradient-end-color), var(--gradient-start-color)); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px rgba(var(--gradient-start-rgb), 0.6); }
+    .avatar { width: 40px; height: 40px; border-radius: 50%; background: linear-gradient(45deg, var(--gradient-end-color), var(--gradient-start-color)); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 8px rgba(var(--gradient-start-rgb), 0.6); flex-shrink: 0; }
     header h1 { font-size: 18px; margin: 0; font-weight: 600; }
     #uid-pill { background: var(--bg-panel-secondary); padding: 4px 10px; border-radius: 8px; font-size: 12px; font-weight: 500; color: var(--text-muted); }
 
@@ -134,50 +132,100 @@
       position: fixed; inset: 0; z-index: 1000;
       background-color: rgba(176, 16, 16, 0.95); backdrop-filter: blur(10px);
       display: flex; align-items: center; justify-content: center; flex-direction: column;
-      animation: fadeInAlert .3s ease-out;
+      padding: 24px; box-sizing: border-box; animation: fadeInAlert .3s ease-out;
     }
     @keyframes fadeInAlert { from { opacity: 0; } to { opacity: 1; } }
-    .alert-box { background-color: var(--bg-dark); padding: 32px 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 60px rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.1); max-width: 420px; }
+    .alert-box { background-color: var(--bg-dark); padding: 32px 40px; border-radius: 20px; text-align: center; box-shadow: 0 0 60px rgba(0,0,0,0.7); border: 2px solid rgba(255,255,255,0.1); width: 100%; max-width: 420px; }
     .alert-box h2 { font-size: 24px; margin: 0 0 12px 0; color: #ff8a8a; }
     .alert-box p { font-size: 16px; color: var(--text-muted); margin: 0 0 24px 0; line-height: 1.6; }
     #alert-password { width: 100%; box-sizing: border-box; }
     #alert-submit { margin-top: 16px; }
     #alert-password.error { border-color: #ff5555; animation: shake 0.4s; }
     @keyframes shake { 10%, 90% { transform: translate3d(-1px, 0, 0); } 20%, 80% { transform: translate3d(2px, 0, 0); } 30%, 50%, 70% { transform: translate3d(-4px, 0, 0); } 40%, 60% { transform: translate3d(4px, 0, 0); } }
+
+    /* ========================================================
+     * 📱 NUEVO: ESTILOS RESPONSIVOS PARA MÓVILES
+     * ======================================================== */
+    @media (max-width: 768px) {
+      .main-container {
+        padding: 0; /* Ocupar toda la pantalla */
+      }
+      .app {
+        width: 100%;
+        height: 100%;
+        max-width: none;
+        max-height: none;
+        border-radius: 0;
+        box-shadow: none;
+      }
+      .app::before, .login-container::before {
+        border-radius: 0; /* El borde animado también ocupa todo */
+      }
+      .login-container {
+        width: 100%; /* El login también se adapta al contenedor */
+        max-width: none;
+        height: 100%;
+        justify-content: center;
+        padding: 24px;
+        box-sizing: border-box;
+        gap: 24px;
+      }
+      header, .chat, .inputbar {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+      .chat {
+        padding-top: 16px;
+        padding-bottom: 16px;
+      }
+      header h1 {
+        font-size: 1rem; /* 16px */
+      }
+      #uid-pill {
+          padding: 4px 8px;
+          font-size: 11px;
+      }
+      .msg {
+        padding: 12px 16px;
+        max-width: 85%; /* Permitir burbujas un poco más anchas */
+      }
+      textarea, .login-input, .login-select {
+        min-height: 48px;
+        padding: 14px;
+      }
+      #sendBtn {
+        width: 48px;
+        height: 48px;
+      }
+      .toolbar-btn {
+          font-size: 12px;
+          padding: 6px 12px;
+      }
+      .alert-box {
+          padding: 24px 20px;
+      }
+    }
   </style>
 </head>
 <body>
 
   <div class="main-container">
     <div class="login-container" id="login-container">
-      <h2>
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>
-        Bienvenido a Xolo AI
-      </h2>
-      <p>Ingresa tus datos para iniciar o continuar tu conversación del día.</p>
-      
-      <!-- CAMBIO: Añadido selector de grado escolar -->
+      <h2><svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path></svg>Xolo AI</h2>
+      <p>Ingresa tus datos para iniciar tu conversación del día.</p>
       <select id="grade-selector" class="login-select">
         <option value="" disabled selected>Selecciona tu grado escolar...</option>
         <optgroup label="Primaria">
-          <option value="3">3° Primaria</option>
-          <option value="4">4° Primaria</option>
-          <option value="5">5° Primaria</option>
-          <option value="6">6° Primaria</option>
+          <option value="3">3° Primaria</option><option value="4">4° Primaria</option><option value="5">5° Primaria</option><option value="6">6° Primaria</option>
         </optgroup>
         <optgroup label="Secundaria">
-          <option value="7">1° Secundaria</option>
-          <option value="8">2° Secundaria</option>
-          <option value="9">3° Secundaria</option>
+          <option value="7">1° Secundaria</option><option value="8">2° Secundaria</option><option value="9">3° Secundaria</option>
         </optgroup>
         <optgroup label="Preparatoria">
-          <option value="10">1° Preparatoria</option>
-          <option value="11">2° Preparatoria</option>
-          <option value="12">3° Preparatoria</option>
+          <option value="10">1° Preparatoria</option><option value="11">2° Preparatoria</option><option value="12">3° Preparatoria</option>
         </optgroup>
       </select>
-      
-      <input type="text" id="username" class="login-input" placeholder="Escribe tu nombre de usuario aquí...">
+      <input type="text" id="username" class="login-input" placeholder="Escribe tu nombre de usuario...">
       <button id="loginBtn" class="login-btn">Entrar a la Conversación</button>
     </div>
     
@@ -193,7 +241,7 @@
           <button id="sendBtn" title="Enviar" disabled><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg></button>
         </div>
         <div class="toolbar">
-          <button class="toolbar-btn" id="logoutBtn" title="Salir de la conversación actual" disabled>Salir de la Conversación</button>
+          <button class="toolbar-btn" id="logoutBtn" title="Salir de la conversación actual" disabled>Salir</button>
         </div>
       </section>
     </div>
@@ -206,20 +254,19 @@
 
   <div id="alert-overlay" hidden>
     <div class="alert-box">
-        <h2>Atención Requerida</h2><p>Se ha detectado una interacción que requiere la supervisión de un profesor. Por favor, avisa a tu maestro para continuar.</p>
+        <h2>Atención Requerida</h2><p>Se ha detectado una interacción que requiere supervisión. Por favor, avisa a tu maestro para continuar.</p>
         <form id="alert-form">
             <input type="password" id="alert-password" class="login-input" placeholder="Contraseña de profesor..."><button type="submit" id="alert-submit" class="login-btn">Desbloquear</button>
         </form>
     </div>
   </div>
 
-
   <script>
     /* ========================================================
      * 🎨 UI & PERSONALIZACIÓN
      * ======================================================== */
     const UI_CONFIG = {
-      INITIAL_BOT_MESSAGE: "¡Hola! Soy Xolo, tu compañero de aprendizaje en Innovación y Tecnología. ¿Cómo te llamas? Por favor, dime tu nombre y cuéntame un poco sobre tus intereses: ¿te gusta el fútbol, la música, algún hobby, películas o animales? Con esa información podré personalizar nuestro aprendizaje. ¡Vamos a crear algo increíble hoy! ",
+      INITIAL_BOT_MESSAGE: "¡Hola! Soy Xolo, tu compañero de aprendizaje. Antes de empezar, dime tu nombre y cuéntame un poco sobre tus intereses: ¿te gusta el fútbol, la música, algún hobby, películas o animales? Así podré personalizar nuestro aprendizaje.",
       GRADIENT_COLOR_1: "#00d162", GRADIENT_COLOR_2: "#5500c4",
       ALERT_PASSWORD: "P4L1S4D3:L1FT"
     };
@@ -227,9 +274,8 @@
     /* =========================
      * ⚙️ CONFIG API
      * ========================= */
-    // CAMBIO: La URL base ahora es una plantilla.
     const API_BASE_URL = "https://xolo-ai-{grade}.chat-gpt-bc7.workers.dev/chat";
-    const CHATBASE_CHATBOT_ID = "oSTY10WXrzUrKWp420JQ9"; // Esto podría ser dinámico también si se quisiera
+    const CHATBASE_CHATBOT_ID = "oSTY10WXrzUrKWp420JQ9";
     const DEFAULT_TEMPERATURE = 0.6;
     const OVERRIDE_MODEL = "gemini-1.5-flash";
     const USE_STREAMING = true;
@@ -240,7 +286,7 @@
     const appEl = document.getElementById("app");
     const loginContainerEl = document.getElementById("login-container");
     const usernameInput = document.getElementById("username");
-    const gradeSelectorEl = document.getElementById("grade-selector"); // NUEVO: Selector de grado
+    const gradeSelectorEl = document.getElementById("grade-selector");
     const loginBtn = document.getElementById("loginBtn");
     
     const chatEl = document.getElementById("chat");
@@ -258,7 +304,7 @@
     let alertSoundInterval = null;
 
     let messages = [];
-    let userUID = null, conversationId = null, selectedGrade = null, apiEndpoint = null; // NUEVOS: Estados para grado y endpoint
+    let userUID = null, conversationId = null, selectedGrade = null, apiEndpoint = null;
 
     function hexToRgb(hex) {
       const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -336,7 +382,7 @@
     }
 
     /* =================================================
-     * 🔐 LÓGICA DE LOGIN Y GENERACIÓN DE ID (MODIFICADA)
+     * 🔐 LÓGICA DE LOGIN Y GENERACIÓN DE ID
      * ================================================= */
     function getDateInUTC6() {
       const now = new Date(); const utc6Date = new Date(now.getTime() - (6 * 60 * 60 * 1000));
@@ -348,21 +394,16 @@
         const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         return `cid-${hashHex.substring(0, 16)}`;
     }
-    // MODIFICADO: Ahora el ID de conversación depende también del grado.
     async function generateConversationIdForUser(username, grade) {
-        const todayUTC6 = getDateInUTC6();
-        const seed = `${username.toLowerCase().trim()}-${grade}-${todayUTC6}`;
+        const todayUTC6 = getDateInUTC6(); const seed = `${username.toLowerCase().trim()}-${grade}-${todayUTC6}`;
         return await deterministicHash(seed);
     }
     async function handleLogin() {
-        selectedGrade = gradeSelectorEl.value;
-        const username = usernameInput.value.trim();
-
+        selectedGrade = gradeSelectorEl.value; const username = usernameInput.value.trim();
         if (!selectedGrade) { alert("Por favor, selecciona tu grado escolar."); return; }
         if (!username) { alert("Por favor, ingresa un nombre de usuario."); return; }
         
-        userUID = username;
-        apiEndpoint = API_BASE_URL.replace('{grade}', selectedGrade);
+        userUID = username; apiEndpoint = API_BASE_URL.replace('{grade}', selectedGrade);
         conversationId = await generateConversationIdForUser(userUID, selectedGrade);
         
         loginContainerEl.setAttribute("hidden", "true"); appEl.removeAttribute("hidden");
@@ -371,17 +412,15 @@
     function handleLogout() {
         appEl.setAttribute("hidden", "true"); loginContainerEl.removeAttribute("hidden");
         userUID = null; conversationId = null; messages = []; chatEl.innerHTML = "";
-        selectedGrade = null; apiEndpoint = null; // Limpiar estado de grado y endpoint
-        usernameInput.value = ""; gradeSelectorEl.selectedIndex = 0; // Resetear inputs
+        selectedGrade = null; apiEndpoint = null;
+        usernameInput.value = ""; gradeSelectorEl.selectedIndex = 0;
         usernameInput.focus();
         promptEl.disabled = true; sendBtn.disabled = true; logoutBtn.disabled = true;
     }
-    // MODIFICADO: El badge ahora muestra el usuario y el grado.
     function updateBadges() { 
         const gradeText = gradeSelectorEl.options[gradeSelectorEl.selectedIndex]?.text || "N/A";
-        uidPill.textContent = `Usuario: ${userUID ?? "—"} (${gradeText})`; 
+        uidPill.textContent = `${userUID ?? "—"} • ${gradeText}`; 
     }
-
     function setupChatSession() {
       showLoader();
       setTimeout(() => {
@@ -397,9 +436,7 @@
           }
           scrollToEnd();
         }
-        if (!isAlertActive) {
-            promptEl.disabled = false; sendBtn.disabled = false; logoutBtn.disabled = false; promptEl.focus();
-        }
+        if (!isAlertActive) { promptEl.disabled = false; sendBtn.disabled = false; logoutBtn.disabled = false; promptEl.focus(); }
       }, 900);
     }
 
@@ -408,12 +445,9 @@
      * ========================= */
     async function onSend() {
       if(conversationId) localStorage.removeItem(`resolved_aurora_${conversationId}`);
-      
-      // MODIFICADO: Chequea también si el apiEndpoint está configurado
       if (!apiEndpoint || !conversationId || sendBtn.disabled || isAlertActive) return;
 
-      const text = promptEl.value.trim();
-      if (!text) return;
+      const text = promptEl.value.trim(); if (!text) return;
       appendMessage("user", text); promptEl.value = "";
       sendBtn.disabled = true; promptEl.disabled = true; logoutBtn.disabled = true;
 
@@ -422,7 +456,6 @@
       messages.push({ role: "assistant", content: "" });
 
       try {
-        // MODIFICADO: Usa el endpoint dinámico
         const res = await fetch(apiEndpoint, {
           method: "POST", headers: { "Content-Type": "application/json", "x-user-uid": userUID },
           body: JSON.stringify({ messages: messages.slice(0, -1), stream: USE_STREAMING, temperature: DEFAULT_TEMPERATURE, conversationId, ...(OVERRIDE_MODEL ? { model: OVERRIDE_MODEL } : {}) }),
@@ -472,7 +505,7 @@
     function loadMessagesFor(cid) { try { const raw = localStorage.getItem(`msgs_${cid}`); return raw ? JSON.parse(raw) : []; } catch { return []; } }
 
     /* ========================================================
-     * 🧩 Render Markdown + Bloques de código con botones (sin cambios)
+     * 🧩 Render Markdown (Sin cambios)
      * ======================================================== */
     function escapeHtml(str) { return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
     function markdownToHtml(md) {
@@ -483,10 +516,8 @@
       text = text.replace(/^###\s+(.+)$/gm, "<h3>$1</h3>").replace(/^##\s+(.+)$/gm, "<h2>$1</h2>").replace(/^#\s+(.+)$/gm, "<h1>$1</h1>");
       text = text.replace(/\*\*([^*]+?)\*\*/g, "<strong>$1</strong>").replace(/\*([^*]+?)\*/g, "<em>$1</em>");
       text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, `<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>`);
-      text = text.replace(/^(?:-|\*)\s+(.+)$/gm, "<li>$1</li>");
-      text = text.replace(/(<li>.*<\/li>)(\n<li>.*<\/li>)+/g, (m) => `<ul>${m.replace(/\n/g, "")}</ul>`);
-      text = text.replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>");
-      text = text.replace(/(<li>.*<\/li>)(\n<li>.*<\/li>)+/g, (m) => `<ol>${m.replace(/\n/g, "")}</ol>`);
+      text = text.replace(/^(?:-|\*)\s+(.+)$/gm, "<li>$1</li>").replace(/(<li>.*<\/li>)(\n<li>.*<\/li>)+/g, (m) => `<ul>${m.replace(/\n/g, "")}</ul>`);
+      text = text.replace(/^\d+\.\s+(.+)$/gm, "<li>$1</li>").replace(/(<li>.*<\/li>)(\n<li>.*<\/li>)+/g, (m) => `<ol>${m.replace(/\n/g, "")}</ol>`);
       const lines = text.split(/\n+/);
       text = lines.map(line => { if (!line.trim()) return ""; if (/^<\/?(h\d|ul|ol|li|pre|code|blockquote)/.test(line.trim())) return line; return `<p>${line}</p>`; }).join("");
       text = text.replace(/{{{CODEBLOCK:(\d+)}}}/g, (_m, iStr) => { const i = parseInt(iStr, 10); const { lang, code } = codeBlocks[i]; const langLabel = lang ? ` data-lang="${escapeHtml(lang)}"` : ""; const codeEsc = escapeHtml(code); return `<div class="code-block"><div class="code-actions"><span style="margin-right:auto; font-size:12px; color:var(--text-muted);">${lang ? escapeHtml(lang) : 'code'}</span><button class="btn-copy" title="Copiar código">Copiar</button><button class="btn-toggle" title="Colapsar/Expandir">Colapsar</button></div><div class="code-body"><pre><code${langLabel}>${codeEsc}</code></pre></div></div>`; });
