@@ -425,17 +425,33 @@
     async function onSend() {
       if(conversationId) localStorage.removeItem(`resolved_aurora_${conversationId}`);
       if (!apiEndpoint || !conversationId || sendBtn.disabled || isAlertActive) return;
-      const text = promptEl.value.trim(); if (!text) return;
-      appendMessage("user", text); promptEl.value = "";
-      sendBtn.disabled = true; promptEl.disabled = true; logoutBtn.disabled = true;
-      const thinkingAnimationHtml = `<div class="thinking"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>`;
-      const botMsgEl = appendBubbleOnly("assistant", thinkingAnimationHtml, true);
-      messages.push({ role: "assistant", content: "" });
-      try {
-        const res = await fetch(apiEndpoint, {
-          method: "POST", headers: { "Content-Type": "application/json", "x-user-uid": userUID },
-          body: JSON.stringify({ messages: messages.slice(0, -1), stream: USE_STREAMING, temperature: DEFAULT_TEMPERATURE, conversationId, ...(OVERRIDE_MODEL ? { model: OVERRIDE_MODEL } : {}) }),
-        });
+ 
+const text = promptEl.value.trim(); if (!text) return;
+
+appendMessage("user", text); // 1. Añade el mensaje del usuario al estado. El array `messages` está limpio.
+promptEl.value = "";
+sendBtn.disabled = true; promptEl.disabled = true; logoutBtn.disabled = true;
+
+// 2. CREA EL PAYLOAD PARA LA API CON EL ESTADO ACTUAL (Y CORRECTO) DE `messages`.
+//    Usamos una copia para asegurar que no se modifique después.
+const messagesForApi = [...messages]; 
+
+// 3. AHORA, modifica el estado de la UI para mostrar la animación "pensando".
+const thinkingAnimationHtml = `<div class="thinking"><span class="bar"></span><span class="bar"></span><span class="bar"></span></div>`;
+const botMsgEl = appendBubbleOnly("assistant", thinkingAnimationHtml, true);
+
+// 4. Y AÑADE EL PLACEHOLDER AL ARRAY `messages` para que pueda ser actualizado por la respuesta.
+messages.push({ role: "assistant", content: "" });
+
+try {
+  // 5. ENVÍA EL PAYLOAD LIMPIO que creamos en el paso 2.
+  const res = await fetch(apiEndpoint, {
+    method: "POST", headers: { "Content-Type": "application/json", "x-user-uid": userUID },
+    // ¡IMPORTANTE! Usamos `messagesForApi` en lugar de `messages.slice(0, -1)`
+    body: JSON.stringify({ messages: messagesForApi, stream: USE_STREAMING, temperature: DEFAULT_TEMPERATURE, conversationId, ...(OVERRIDE_MODEL ? { model: OVERRIDE_MODEL } : {}) }),
+  });
+      
+      
         if (!res.ok) { let e = `${res.status} ${res.statusText}`; try { const j = await res.json(); if (j?.message) e = j.message; } catch {} throw new Error(e); }
         botMsgEl.innerHTML = ""; 
         if (USE_STREAMING && res.body) {
