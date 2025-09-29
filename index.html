@@ -464,11 +464,20 @@ try {
           }
           finalizeAssistantMessage(botMsgEl, botMsgEl.textContent);
         } else { const data = await res.json(); finalizeAssistantMessage(botMsgEl, data?.text || "(sin respuesta)"); }
-      } catch (err) {
-        botMsgEl.innerHTML = ""; botMsgEl.textContent = `Error: ${err.message}`;
-        botMsgEl.style.boxShadow = "0 0 15px rgba(255, 50, 50, 0.4)";
-        finalizeAssistantMessage(botMsgEl, botMsgEl.textContent);
-      } finally {
+
+} catch (err) {
+  // En lugar de rellenar el mensaje con un error, lo mostramos...
+  botMsgEl.innerHTML = ""; 
+  botMsgEl.textContent = `Error: ${err.message}`;
+  botMsgEl.style.boxShadow = "0 0 15px rgba(255, 50, 50, 0.4)";
+  
+  // ...y eliminamos el placeholder fallido del historial.
+  if (messages.length > 0 && messages[messages.length - 1].role === 'assistant') {
+    messages.pop(); // Elimina el último elemento (el placeholder)
+    persistState(); // Guarda el estado limpio
+  }
+} finally {
+
         if (!isAlertActive) { sendBtn.disabled = false; promptEl.disabled = false; logoutBtn.disabled = false; promptEl.focus(); }
       }
     }
